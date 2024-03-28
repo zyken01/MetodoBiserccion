@@ -25,7 +25,6 @@ Use this repository to get up and running on FL0 with the following stack:
 ## Getting Started
 
 Clone this repo and run the following commands from the project root:
-
 1. `npm install`
 2. `npm start`
 3. Visit http://localhost:3000 to see your app running
@@ -46,39 +45,36 @@ Any issues or feature requests can be raised on the [Issues page](https://github
 
 This template repository is [MIT licensed](LICENSE).
 
-
-
-# CongresoMate
-
+## CongresoMate
 ## Paso 1: Inicializa un proyecto Node.js
-# npm init -y
+npm init -y
 
 ## Paso 2: Instala las dependencias necesarias
-# npm install express
+npm install express
 
 ## Modulos necesarios
-# npm install jquery bootstrap datatables.net jsrender mathjax morgan
-# npm i nodemon -D
+npm install jquery bootstrap datatables.net jsrender mathjax morgan
+npm i nodemon -D
 
 ## Crear directorios
-# mkdir src
-# cd src
-# mkdir lib public routes views
+mkdir src
+cd src
+mkdir lib public routes views
 
 ## Correr proyecto
-# node index.js
-# npm run dev
-# npm start
+node index.js
+npm run dev
+npm start
 
 ## Detener proyecto
-# ctrl + C
+ctrl + C
 
 ## Puerto
-# http://localhost:3000
+http://localhost:3000
 
 
-## bsucar modulos
-# npm search
+## buscar modulos
+npm search
 
 ## Videos referencia
-# https://www.youtube.com/watch?v=qJ5R9WTW0_E
+https://www.youtube.com/watch?v=qJ5R9WTW0_E

@@ -26,47 +26,61 @@
             Método de Bisección
         </div>
         <div class="card-body">
-            <p class="fw-bold">Resultados y análisis</p>
-            <p>En la tabla 1 se ilustran los cálculos realizados a mano, cabe destacar que cuando el estudiante realiza dichas operaciones 
-               en este problema con N iteraciones suele llevarse aproximadamente entre 30 o 40 minutos y con una probabilidad alta de tener error.
-            </p>
 
-            <p class="fw-bold text-primary">Ejemplo:</p>
-            <p class="">Encontrar la raíz aislada de la función f (x) = x3 − x −1 en el intervalo [1, 2] con un error ε = 01</p>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <p class="fw-bold">Resultados y análisis</p>
+                    <p>En la tabla 1 se ilustran los cálculos realizados a mano, cabe destacar que cuando el estudiante realiza dichas operaciones 
+                        en este problema con N iteraciones suele llevarse aproximadamente entre 30 o 40 minutos y con una probabilidad alta de tener error.
+                    </p>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4" style="min-height:320px;">
+                    <p class="fw-bold text-primary">Ejemplo:</p>
+                    <p class="">Encontrar la raíz aislada de la función</p>
+                    <p class="">f (x) = x3 − x −1 en el intervalo [1, 2] con un error ε = 01</p>
+                    </br>
+                    <p class="fw-bold">Tabla. 1 Valores por el Método de Bisección</p>
 
-            <p class="fw-bold">Tabla. 1 Valores por el Método de Bisección</p>
-            
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-8">
+                    <canvas id="cartesian-plane"></canvas>
+                </div>
+            </div>
+                        
             <form class="row g-3 my-2">
-                <div class="col-3">
+                <div class="col-sm-6 col-md-2 col-lg-2">
                     <label for="input_label" class="visually-hidden">#</label>
                     <input type="text" readonly class="form-control-plaintext" id="input_label" value="Ingrese el numero">
                 </div>
-                <div class="col-3">
+                <div class="col-sm-6 col-md-3 col-lg-3">
                     <label for="input_number" class="visually-hidden">numero</label>
                     <input type="number" class="form-control" id="input_number" placeholder="#" value="1" min="1" required>
                 </div>
-                <div class="col-6">
+                <div class="col-sm-12 col-md-6 col-lg-6">
                     <div class="input-group">
-                        <button type="button" class="btn btn-primary mx-2" id="btnTblRowCreate">Iniciar</button>
-                        <button type="button" class="btn btn-danger mx-2" d="btnDetener">Detener</button>
+                        <button type="button" class="btn btn-primary mx-2 btn-block" id="btnTblRowCreate">Comenzar</button>
+                        <button type="button" class="btn btn-danger mx-2 btn-block" id="btnDetener">Detener</button>
                     </div>
                 </div>
             </form>
 
             <br/>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>K</th>
-                        <th>\( a_{K} \)</th>
-                        <th>\( b_{K} \)</th>
-                        <th>\( X_{k+1} = \left(\frac{a_k + b_k}{2}\right) \)</th>
-                        <th>\( f(x_{k+1}) \)</th>
-                    </tr>
-                </thead>
-                <tbody id="multiplicationTableBody">
-                </tbody>
-            </table>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>K</th>
+                            <th>\( a_{K} \)</th>
+                            <th>\( b_{K} \)</th>
+                            <th>\( X_{k+1} = \left(\frac{a_k + b_k}{2}\right) \)</th>
+                            <th>\( f(x_{k+1}) \)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="multiplicationTableBody">
+                    </tbody>
+                </table>
+            </div>
 
             <div id="content_render"></div
         </div>
@@ -76,6 +90,8 @@
 
 <!-- content script -->
 <script>
+var continuar = true;
+
 $(document).ready(async function() {
     const respuestaDiv = $('#respuesta');
     const obtenerRespuestaBtn = $('#obtenerRespuesta');
@@ -89,7 +105,6 @@ $(document).ready(async function() {
 
     // ===============
     // Evento de clic en el botón
-    var continuar = true;
     $('#btnDetener').on('click', function() {
         $("#btnTblRowCreate").prop("disabled", false);
         continuar = false;
@@ -98,27 +113,27 @@ $(document).ready(async function() {
     $('#btnTblRowCreate').on('click', function() {
         funcionDatosTabla();
     });
+
+    //Dibuja el plano cartesiano
+    createPlanoCartesiano();
 });
 
 /*  
 * Funcion para iterar la tabla
 */
 function funcionDatosTabla(){
+    var contador = 1, styleA ="", styleB ="", c, fc, data;
     var inputNumber = $("#input_number");
-    var contador = 1;
     var numberVal = inputNumber.val();
     var tipo_resultado = ">0";
     var a = 1;
     var b = 2;
-    var styleA ="";
-    var styleB ="";
-    let c;
-    let fc;
 
     //Se reinicioan variables
     continuar = true;
     $("#btnTblRowCreate").prop("disabled", true);
     $("#multiplicationTableBody").html("");
+    limpiarGrafica();
 
     // Metodo
     function agregarFila(data) {
@@ -137,6 +152,10 @@ function funcionDatosTabla(){
     }
 
     // Verifica si se ha hecho clic en el botón
+    /*
+        Negativo se va el valor de B menor que cero
+        Positiva se va el valor de A mayor que cero
+    */
     const intervalo = setInterval(function() {
         if( contador <= numberVal){
             if(continuar) {
@@ -162,6 +181,8 @@ function funcionDatosTabla(){
                 };
 
                 agregarFila(data);
+                agregarPunto(a, b);
+
                 styleA ="";
                 styleB ="";
 
@@ -188,7 +209,6 @@ function funcionDatosTabla(){
     }, 1500);
 }
 
-
 /* ==================
 * Generales
 * ==================
@@ -208,4 +228,93 @@ function hacerSolicitudGET(url, successCallback, errorCallback) {
         errorCallback(error);
     });
 }
+</script>
+
+<script>
+    var data = "";
+    var cartesianPlane = null; // Inicializa la variable como null
+
+    const canvas = document.getElementById('cartesian-plane').getContext('2d');
+
+    // Configurar opciones del gráfico
+    const options = {
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+                title: {
+                    display: false // Oculta el título del eje X
+                },
+                ticks: {
+                    min: 1, // Valor mínimo del eje X
+                    max: 2, // Valor máximo del eje X
+                    stepSize: 0.1, // Tamaño del paso entre ticks en el eje X
+                    precision: 1, // Número de decimales a mostrar
+                    display: true // Muestra los ticks del eje X
+                }
+            },
+            y: {
+                type: 'linear',
+                position: 'left',
+                title: {
+                    display: false // Oculta el título del eje Y
+                },
+                ticks: {
+                    min: 1, // Valor mínimo del eje Y
+                    max: 2, // Valor máximo del eje Y
+                    stepSize: 0.1, // Tamaño del paso entre ticks en el eje Y
+                    precision: 1, // Número de decimales a mostrar
+                    display: true // Muestra los ticks del eje Y
+                }
+            }
+        }
+    };
+
+    function createPlanoCartesiano() {
+        // Destruir la instancia actual de la gráfica, si existe
+        if (cartesianPlane) {
+            cartesianPlane.destroy();
+        }
+
+        // Crear el gráfico con Chart.js
+        cartesianPlane = new Chart(canvas, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+
+        // Agregar líneas verticales y horizontales al plano cartesiano
+        cartesianPlane.data.datasets.push({
+            label: 'A',
+            data: [{ x: 0, y: -2 }, { x: 0, y: 2 }],
+            borderColor: 'black',
+            borderWidth: 2,
+            fill: false
+        });
+
+        cartesianPlane.data.datasets.push({
+            label: 'B',
+            data: [{ x: -2, y: 0 }, { x: 2, y: 0 }],
+            borderColor: 'black',
+            borderWidth: 1,
+            fill: false
+        });
+
+        // Actualizar el gráfico
+        cartesianPlane.update();
+    }
+
+    // Definir una función para agregar nuevos puntos al gráfico
+    function agregarPunto(x, y) {
+        // Agregar el nuevo punto al conjunto de datos del gráfico
+        cartesianPlane.data.datasets[0].data.push({x: x, y: y});
+        // Actualizar el gráfico
+        cartesianPlane.update();
+    }
+
+    // Función para limpiar y reiniciar la gráfica
+    function limpiarGrafica() {
+        // Llamar a la función para crear el plano cartesiano
+        createPlanoCartesiano();
+    }
 </script>
