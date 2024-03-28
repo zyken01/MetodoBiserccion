@@ -1,0 +1,211 @@
+<!--  MathJax  -->
+<div class="row align-items-md-stretch">
+    <div class="col-md-6">
+    <div class="h-100 p-5 text-bg-dark rounded-3">
+        <h2>Punto medio del intervalo:</h2>
+        <p>El punto medio del intervalo = Límite inferior del Intervalo + la mitad del intervalo [𝑎, 𝑏]. Si el intervalo es [𝑎, 𝑏]. Esto es</p>
+        <p class="fs-5">Ecuación: \( x = a + \left(\frac{b - {a}}{2}\right) \)</p>
+        <p class="fs-5">Ecuación: \( x = \frac{2a + b - {a}}{2} \)</p>
+        <p class="fs-5">Ecuación: \( x = \frac{a + b}{2} \)</p>
+        
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+        <h2>Ecuación Recursiva</h2>
+        <p class="fs-3">Ecuación: \( x = \frac{a + b}{2} \)</p>
+    </div>
+    </div>
+</div>
+
+</br>
+
+<div class="p-4 mb-4 bg-body-tertiary rounded-3">
+    <div class="card">
+        <div class="card-header">
+            Método de Bisección
+        </div>
+        <div class="card-body">
+            <p class="fw-bold">Resultados y análisis</p>
+            <p>En la tabla 1 se ilustran los cálculos realizados a mano, cabe destacar que cuando el estudiante realiza dichas operaciones 
+               en este problema con N iteraciones suele llevarse aproximadamente entre 30 o 40 minutos y con una probabilidad alta de tener error.
+            </p>
+
+            <p class="fw-bold text-primary">Ejemplo:</p>
+            <p class="">Encontrar la raíz aislada de la función f (x) = x3 − x −1 en el intervalo [1, 2] con un error ε = 01</p>
+
+            <p class="fw-bold">Tabla. 1 Valores por el Método de Bisección</p>
+            
+            <form class="row g-3 my-2">
+                <div class="col-3">
+                    <label for="input_label" class="visually-hidden">#</label>
+                    <input type="text" readonly class="form-control-plaintext" id="input_label" value="Ingrese el numero">
+                </div>
+                <div class="col-3">
+                    <label for="input_number" class="visually-hidden">numero</label>
+                    <input type="number" class="form-control" id="input_number" placeholder="#" value="1" min="1" required>
+                </div>
+                <div class="col-6">
+                    <div class="input-group">
+                        <button type="button" class="btn btn-primary mx-2" id="btnTblRowCreate">Iniciar</button>
+                        <button type="button" class="btn btn-danger mx-2" d="btnDetener">Detener</button>
+                    </div>
+                </div>
+            </form>
+
+            <br/>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>K</th>
+                        <th>\( a_{K} \)</th>
+                        <th>\( b_{K} \)</th>
+                        <th>\( X_{k+1} = \left(\frac{a_k + b_k}{2}\right) \)</th>
+                        <th>\( f(x_{k+1}) \)</th>
+                    </tr>
+                </thead>
+                <tbody id="multiplicationTableBody">
+                </tbody>
+            </table>
+
+            <div id="content_render"></div
+        </div>
+    </div>
+</div>
+
+
+<!-- content script -->
+<script>
+$(document).ready(async function() {
+    const respuestaDiv = $('#respuesta');
+    const obtenerRespuestaBtn = $('#obtenerRespuesta');
+
+    // Se inserta la tabla con los datos
+    await hacerSolicitudGET('/dataTable', 
+        function(data) {
+            $("#content_render").html(data);
+        }
+    );
+
+    // ===============
+    // Evento de clic en el botón
+    var continuar = true;
+    $('#btnDetener').on('click', function() {
+        $("#btnTblRowCreate").prop("disabled", false);
+        continuar = false;
+    });
+
+    $('#btnTblRowCreate').on('click', function() {
+        funcionDatosTabla();
+    });
+});
+
+/*  
+* Funcion para iterar la tabla
+*/
+function funcionDatosTabla(){
+    var inputNumber = $("#input_number");
+    var contador = 1;
+    var numberVal = inputNumber.val();
+    var tipo_resultado = ">0";
+    var a = 1;
+    var b = 2;
+    var styleA ="";
+    var styleB ="";
+    let c;
+    let fc;
+
+    //Se reinicioan variables
+    continuar = true;
+    $("#btnTblRowCreate").prop("disabled", true);
+    $("#multiplicationTableBody").html("");
+
+    // Metodo
+    function agregarFila(data) {
+        var template = $.templates("#tblRow");
+        var htmlOutput = template.render(data);
+        $("#multiplicationTableBody").append(htmlOutput);
+    }
+
+    function biseccion(a, b) {
+        operacion = (a ** 1 + b ** 1) / 2;
+        return operacion.toFixed(5);
+    }
+
+    function f(x) {
+        return Math.pow(x, 3) - x - 1;
+    }
+
+    // Verifica si se ha hecho clic en el botón
+    const intervalo = setInterval(function() {
+        if( contador <= numberVal){
+            if(continuar) {
+                //vARIABLES
+                resultado = biseccion(a, b);
+
+                // Verificar si f(a) y f(b) tienen el mismo signo
+                let fa = f(a);
+                let fb = f(b);
+                if (fa * fb >= 0) {
+                    console.error("No se puede garantizar la existencia de una raíz en el intervalo dado.");
+                }
+
+                // Actualizar los límites del intervalo
+                data = {
+                    number : contador,
+                    A : a,
+                    B : b,
+                    styleA : styleA,
+                    styleB : styleB,
+                    result : resultado,
+                    tipo_resultado : tipo_resultado
+                };
+
+                agregarFila(data);
+                styleA ="";
+                styleB ="";
+
+                if (fa * f(resultado) < 0) {
+                    b = resultado;
+                    styleB = "text-danger";
+                    tipo_resultado = "<0";
+                } else {
+                    a = resultado;
+                    styleA = "text-danger";
+                    tipo_resultado = ">0";
+                }
+
+            }else{
+                console.log("Detener programa");
+                clearInterval(intervalo);
+            }
+            contador++;
+        }else{
+            console.log("Detener programa fin de iteraciones");
+            $("#btnTblRowCreate").prop("disabled", false);
+            clearInterval(intervalo);
+        }
+    }, 1500);
+}
+
+
+/* ==================
+* Generales
+* ==================
+*/
+function hacerSolicitudGET(url, successCallback, errorCallback) {
+    fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('No se pudo completar la solicitud');
+        }
+        return response.text();
+    })
+    .then(data => {
+        successCallback(data);
+    })
+    .catch(error => {
+        errorCallback(error);
+    });
+}
+</script>
