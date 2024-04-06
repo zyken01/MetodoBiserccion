@@ -12,12 +12,109 @@
     </style>
 </head>
 <body>
-    <h1>Ejemplo de visualización de código Java en HTML con estilos personalizados</h1>
-    
-    <pre><code>
-public class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hola, mundo!");
-    }
-}
-    </code></pre>
+
+<h1>Titulo de las cabezeras con la formula</h1>
+
+<pre><code class="language-html">
+&lt;div class="row align-items-md-stretch"&gt;
+    &lt;div class="col-md-6"&gt;
+        &lt;div class="h-100 p-5 text-bg-dark rounded-3"&gt;
+            &lt;h2&gt;Punto medio del intervalo:&lt;/h2&gt;
+            &lt;p&gt;El punto medio del intervalo = Límite inferior del Intervalo + la mitad del intervalo [𝑎, 𝑏]. 
+            Si el intervalo es [𝑎, 𝑏]. Esto es&lt;/p&gt;
+            &lt;p class="fs-5"&gt;Ecuación: \( x = a + \left(\frac{b - {a}}{2}\right) \)&lt;/p&gt;
+            &lt;p class="fs-5"&gt;Ecuación: \( x = \frac{2a + b - {a}}{2} \)&lt;/p&gt;
+            &lt;p class="fs-5"&gt;Ecuación: \( x = \frac{a + b}{2} \)&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="col-md-6"&gt;
+        &lt;div class="h-100 p-5 bg-body-tertiary border rounded-3"&gt;
+            &lt;h2&gt;Ecuación Recursiva&lt;/h2&gt;
+            &lt;p class="fs-3"&gt;Ecuación: \( x = \frac{a + b}{2} \)&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h1>Contenido principal que es el Body</h1>
+
+<pre><code class="language-html">
+&lt;div class="p-4 mb-4 bg-body-tertiary rounded-3"&gt;
+    &lt;div class="card"&gt;
+        &lt;div class="card-header"&gt;
+            Método de Bisección
+        &lt;/div&gt;
+        &lt;div class="card-body"&gt;
+
+            &lt;div class="row"&gt;
+                &lt;div class="col-sm-12 col-md-12 col-lg-12"&gt;
+                    &lt;p class="fw-bold"&gt;Resultados y análisis&lt;/p&gt;
+                    &lt;p&gt;En la tabla 1 se ilustran los cálculos realizados a mano, 
+                        cabe destacar que cuando el estudiante realiza dichas operaciones 
+                        en este problema con N iteraciones suele llevarse aproximadamente entre 30 o 40 minutos
+                         y con una probabilidad alta de tener error.
+                    &lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-12 col-md-4 col-lg-4" style="min-height:320px;"&gt;
+                    &lt;p class="fw-bold text-primary"&gt;Ejemplo:&lt;/p&gt;
+                    &lt;p class=""&gt;Encontrar la raíz aislada de la función&lt;/p&gt;
+                    &lt;p class=""&gt;f (x) = x3 − x −1 en el intervalo [1, 2] con un error ε = 01&lt;/p&gt;
+                    &lt;/br&gt;
+                    &lt;p class="fw-bold"&gt;Tabla. 1 Valores por el Método de Bisección&lt;/p&gt;
+
+                &lt;/div&gt;
+                &lt;div class="col-sm-12 col-md-8 col-lg-8"&gt;
+                    &lt;canvas id="cartesian-plane"&gt;&lt;/canvas&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+                        
+            &lt;form class="row g-3 my-2"&gt;
+                &lt;div class="col-sm-6 col-md-2 col-lg-2"&gt;
+                    &lt;label for="input_label" class="visually-hidden"&gt;#&lt;/label&gt;
+                    &lt;input type="text" readonly class="form-control-plaintext" id="input_label" value="Ingrese el numero"&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-6 col-md-3 col-lg-3"&gt;
+                    &lt;label for="input_number" class="visually-hidden"&gt;numero&lt;/label&gt;
+                    &lt;input type="number" class="form-control" id="input_number" placeholder="#" value="1" min="1" required&gt;
+                &lt;/div&gt;
+                &lt;div class="col-sm-12 col-md-6 col-lg-6"&gt;
+                    &lt;div class="input-group"&gt;
+                        &lt;button type="button" class="btn btn-primary mx-2 btn-block" id="btnTblRowCreate"&gt;Comenzar&lt;/button&gt;
+                        &lt;button type="button" class="btn btn-danger mx-2 btn-block" id="btnDetener"&gt;Detener&lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+
+            &lt;br/&gt;
+
+            &lt;div class="table-responsive"&gt;
+                &lt;table class="table table-striped"&gt;
+                    &lt;thead&gt;
+                        &lt;tr&gt;
+                            &lt;th&gt;K&lt;/th&gt;
+                            &lt;th&gt;\( a_{K} \)&lt;/th&gt;
+                            &lt;th&gt;\( b_{K} \)&lt;/th&gt;
+                            &lt;th&gt;\( X_{k+1} = \left(\frac{a_k + b_k}{2}\right) \)&lt;/th&gt;
+                            &lt;th&gt;\( f(x_{k+1}) \)&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody id="multiplicationTableBody"&gt;
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+
+            &lt;div id="content_render"&gt;&lt;/div
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+
+
+    <!-- Llama a Prism.js para resaltar el código -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Encuentra el bloque de código y resáltalo con Prism.js
+            Prism.highlightAll();
+        });
+    </script>
