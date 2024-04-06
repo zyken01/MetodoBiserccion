@@ -13,6 +13,7 @@ const { emisorProductos, generateMultiplicationTable } = require('../js/eventHan
 const publicDir = path.join(__dirname, 'public');
 const templatesRoot = ('./public/web');
 const templatesDirIndex = ('./public/web/index');
+const templatesDirCodePage = ('./public/web/codePage');
 
 // Función para leer archivos HTML de manera asíncrona
 const readHTMLFile = async (filePath) => {
@@ -35,6 +36,35 @@ router.get('/', async (req, res) => {
             readHTMLFile(path.join(templatesRoot, 'header.html')),
             readHTMLFile(path.join(templatesDirIndex, 'title.html')),
             readHTMLFile(path.join(templatesDirIndex, 'content.html')),
+            readHTMLFile(path.join(templatesRoot, 'footer.html'))
+        ]);
+
+        // Se reemplaza el contenido para agregar la tabla
+        // const filledContent = content.replace('<div id="tblCreate"></div>', tableContent);
+        // Envía la plantilla principal con el header, el título, el contenido y el footer incluidos
+        const filledTemplate = `
+                                ${headerContent}
+                                ${titleContent}
+                                ${content}
+                                ${footerContent}
+                              `;
+
+        // Envía la plantilla HTML llena como respuesta
+        res.send(filledTemplate);
+
+    } catch (error) {
+        console.error('Error al leer archivos HTML:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+router.get('/codePage', async (req, res) => {
+    try {
+        // Lee el contenido del header, title, contenido y footer desde los archivos HTML
+        const [headerContent, titleContent, content,  footerContent] = await Promise.all([
+            readHTMLFile(path.join(templatesRoot, 'header.html')),
+            readHTMLFile(path.join(templatesDirCodePage, 'title.html')),
+            readHTMLFile(path.join(templatesDirCodePage, 'content.html')),
             readHTMLFile(path.join(templatesRoot, 'footer.html'))
         ]);
 
